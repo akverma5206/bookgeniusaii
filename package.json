@@ -1,0 +1,9 @@
+{
+  "name": "bookgeniusaii",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
+    "@netlify/functions": "^6.0.3"
+  }
+}

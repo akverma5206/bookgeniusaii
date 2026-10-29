@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BookGenius AI — Your Idea. Your Book. Your Story.</title>
+<style>
+:root{--bg:#fbf8f2;--surface:#fff;--ink:#1b2340;--muted:#5a6280;--gold:#b8892b;--violet:#6a4fc4;--line:#e8e1d2;--soft:#f4efe4;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12162b;--surface:#1b2140;--ink:#f3eee2;--muted:#a9afc9;--gold:#e0b25a;--violet:#a791f0;--line:#2c3358;--soft:#171c36;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12162b;--surface:#1b2140;--ink:#f3eee2;--muted:#a9afc9;--gold:#e0b25a;--violet:#a791f0;--line:#2c3358;--soft:#171c36;color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Georgia,"Times New Roman",serif}
+h1,h2,h3,.sans,button,input,select,textarea,nav{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:700;font-size:1.15rem;text-decoration:none}.logo span{color:var(--gold)}
+nav .links{display:flex;gap:20px;font-size:.92rem}nav .links a{text-decoration:none;color:var(--muted)}nav .links a:hover{color:var(--ink)}
+.btn{display:inline-block;padding:13px 24px;border-radius:999px;font-weight:600;font-size:1rem;text-decoration:none;border:1.5px solid var(--ink);cursor:pointer;background:transparent;color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--violet);outline-offset:2px}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center;padding:72px 0 56px}
+.eyebrow{color:var(--gold);font-weight:700;letter-spacing:.12em;font-size:.78rem;text-transform:uppercase}
+h1{font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.1;margin:.3em 0}
+.sub{color:var(--muted);font-size:1.12rem;max-width:34em}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.cover{aspect-ratio:2/3;max-width:260px;margin:0 auto;border-radius:6px 14px 14px 6px;background:linear-gradient(160deg,#1f2a5a,#4b3a9a 60%,#b8892b);color:#fff;padding:28px 22px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 24px 50px rgba(20,25,60,.35),inset 8px 0 12px rgba(0,0,0,.2);transform:rotate(2deg)}
+.cover b{font:700 1.7rem/1.15 Georgia,serif}.cover small{opacity:.85;letter-spacing:.1em;text-transform:uppercase;font-family:system-ui,sans-serif;font-size:.7rem}
+section{padding:56px 0}
+h2{font-size:clamp(1.6rem,3.5vw,2.2rem);margin:0 0 .4em}
+.lead{color:var(--muted);max-width:40em;margin:0 0 28px}
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 12px;text-align:center;font-family:system-ui,sans-serif;font-weight:600}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;margin:0 auto 8px;border-radius:50%;background:var(--soft);color:var(--gold);font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}
+.card h3{margin:0 0 6px;font-size:1.05rem}.card p{margin:0;color:var(--muted);font-size:.95rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:6px 14px;border-radius:999px;background:var(--soft);border:1px solid var(--line);font-family:system-ui,sans-serif;font-size:.88rem}
+.alt{background:var(--soft);border-block:1px solid var(--line)}
+form{display:grid;grid-template-columns:1fr 1fr;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
+label{display:grid;gap:6px;font-size:.88rem;font-weight:600;font-family:system-ui,sans-serif}
+.full{grid-column:1/-1}
+input,select,textarea{font:inherit;font-size:1rem;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+textarea{min-height:90px;resize:vertical}
+#out{display:none;margin-top:18px}
+pre{white-space:pre-wrap;word-break:break-word;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;font:.9rem/1.55 ui-monospace,Menlo,Consolas,monospace;margin:0 0 12px}
+.note{border-left:4px solid var(--gold);background:var(--surface);padding:16px 20px;border-radius:0 14px 14px 0;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-size:.9rem;font-family:system-ui,sans-serif}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media(max-width:820px){.hero{grid-template-columns:1fr;padding-top:40px}.cover{order:-1;max-width:200px}.steps{grid-template-columns:repeat(2,1fr)}form{grid-template-columns:1fr}nav .links{display:none}}
+@media(prefers-reduced-motion:no-preference){.card{transition:transform .2s}.card:hover{transform:translateY(-3px)}}
+[hidden]{display:none!important}
+.gen{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:grid;gap:16px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px}.acts{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+#bar{height:8px;border-radius:9px;background:var(--soft);overflow:hidden}#bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .4s}
+.bookcover{aspect-ratio:2/3;max-width:200px;border-radius:6px 12px 12px 6px;background:linear-gradient(160deg,#1f2a5a,#4b3a9a 60%,#b8892b);color:#fff;padding:20px 16px;display:flex;flex-direction:column;justify-content:space-between;margin:28px 0 8px;box-shadow:0 16px 36px rgba(20,25,60,.3)}
+.bookcover b{font:700 1.3rem/1.2 Georgia,serif}.bookcover small{font:.68rem system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.chap{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;margin:14px 0}
+.chap h3{margin:0 0 10px;font-size:1.2rem}.chap .t{white-space:pre-wrap;outline:none;line-height:1.8}.chap button{margin-top:10px;padding:8px 16px;font-size:.88rem}
+@media(max-width:820px){.row{grid-template-columns:1fr}}
+@media print{header,footer,#how,#features,section:not(#start),.hero,.gen,.acts,.chap button,p.sans,.lead,#start>.wrap>h2{display:none!important}#start{padding:0}.chap{border:0;page-break-inside:auto}.bookcover{break-after:page;max-width:none;height:90vh;margin:0}body{background:#fff;color:#000}}
+.cvwrap{display:grid;grid-template-columns:260px 1fr;gap:24px;margin:28px 0;align-items:start}#cv svg{width:100%;height:auto;display:block;border-radius:4px 10px 10px 4px;box-shadow:0 18px 40px rgba(20,25,60,.35)}.cvctl{display:grid;gap:12px}#pv{width:100%;height:80vh;border:1px solid var(--line);border-radius:14px;background:#d9d4c7;margin-top:16px}
+@media(max-width:820px){.cvwrap{grid-template-columns:1fr}#cv{max-width:260px}}
+.tl{display:flex;align-items:center;gap:8px;font-family:system-ui,sans-serif;font-weight:600;font-size:.9rem}.tl select{width:auto}#tr-in,#tr-out{min-height:200px}
+#chat-fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;box-shadow:0 8px 24px rgba(20,25,60,.35)}
+#chat{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:30;width:min(380px,calc(100vw - 24px));height:min(540px,75vh);background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 50px rgba(20,25,60,.4);display:flex;flex-direction:column;overflow:hidden;font-family:system-ui,sans-serif}
+#chat[hidden]{display:none}
+.chead{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}.chead button{background:none;border:0;color:var(--ink);font-size:1.5rem;cursor:pointer;line-height:1}
+#chat-log{flex:1;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:88%;padding:9px 13px;border-radius:14px;font-size:.93rem;line-height:1.5;white-space:pre-wrap;word-break:break-word}.m.u{align-self:flex-end;background:var(--ink);color:var(--bg)}.m.a{align-self:flex-start;background:var(--soft);border:1px solid var(--line)}
+.m button{display:block;margin-top:8px;font:inherit;font-size:.82rem;padding:5px 11px;border-radius:99px;border:1px solid var(--gold);background:transparent;color:var(--ink);cursor:pointer}
+#chat-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 8px}#chat-chips button{font:inherit;font-size:.8rem;padding:5px 11px;border-radius:99px;border:1px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer}
+.cin{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line)}.cin textarea{min-height:0;height:42px;resize:none;flex:1}.cin .btn{padding:8px 16px}
+@media print{#chat,#chat-fab{display:none!important}}
+.styles{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0;grid-column:1/-1}.styles legend{font:600 .88rem system-ui,sans-serif;padding:0 6px}#styles{display:flex;flex-wrap:wrap;gap:8px}.sty{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--soft);font:500 .88rem system-ui,sans-serif;cursor:pointer}.sty input{width:auto}.chk{display:flex!important;align-items:center;gap:8px;font-weight:500!important}.chk input{width:auto}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav aria-label="Main">
+<a class="logo" href="#top">Book<span>Genius</span> AI</a>
+<div class="links"><a href="#how">How it works</a><a href="#features">Features</a><a href="#languages">Languages</a><a href="#start">Start a book</a><a href="#translate">Translate</a><a href="#honest">Good to know</a></div>
+</nav></div></header>
+
+<main id="top">
+<div class="wrap">
+<div class="hero">
+<div>
+<div class="eyebrow">AI book creation platform</div>
+<h1>Your Idea. Your Book. Your Story.</h1>
+<p class="sub">Turn your imagination into complete books with AI-powered writing, multilingual support, beautiful covers, and professional exports.</p>
+<div class="cta"><a class="btn primary" href="#start">Create Your Book</a><a class="btn" href="#features">Explore Features</a></div>
+</div>
+<div class="cover" aria-hidden="true"><small>A novel</small><b>Your Title<br>Goes Here</b><small>Your Name</small></div>
+</div>
+</div>
+
+<section id="how"><div class="wrap">
+<h2>From idea to download in six steps</h2>
+<p class="lead">A guided wizard walks you through each stage. You review and edit the outline and every chapter before anything is final.</p>
+<ol class="steps"><li>Idea</li><li>Outline</li><li>Manuscript</li><li>Cover</li><li>PDF</li><li>Download</li></ol>
+</div></section>
+
+<section id="features" class="alt"><div class="wrap">
+<h2>Everything a book needs</h2>
+<p class="lead">Built around a chapter-by-chapter workflow, so long books stay consistent and you stay in control.</p>
+<div class="grid">
+<div class="card"><h3>Chapter-by-chapter writing</h3><p>Each chapter is generated and saved separately, so progress resumes after an interruption and you can rewrite one chapter without touching the rest.</p></div>
+<div class="card"><h3>Continuity memory</h3><p>Characters, places, timeline and chapter summaries are tracked so the story stays consistent from first page to last.</p></div>
+<div class="card"><h3>Real-typography covers</h3><p>Artwork is generated or uploaded, while the title and author name are set in real fonts, so the text is always accurate.</p></div>
+<div class="card"><h3>Professional interior</h3><p>Title page, copyright page, table of contents, page numbers, chapter openers and an About the Author page from your own details.</p></div>
+<div class="card"><h3>Many export formats</h3><p>Complete PDF, interior-only PDF, front cover image, editable DOCX, Markdown and EPUB, with a KDP preparation checklist.</p></div>
+<div class="card"><h3>Private by design</h3><p>Your manuscripts belong to you. Downloads use expiring links, and you can export or delete your projects at any time.</p></div>
+</div>
+</div></section>
+
+<section><div class="wrap">
+<h2>Genres for every kind of book</h2>
+<p class="lead">Pick a category, or define your own with custom instructions.</p>
+<div class="chips" aria-label="Book categories"></div>
+</div></section>
+
+<section id="languages" class="alt"><div class="wrap">
+<h2>Write in your language</h2>
+<p class="lead">Choose the language before generating. Your book stays in that language and is never silently translated. Roman Hindi is written naturally in the Latin alphabet, and right-to-left languages get proper RTL layout.</p>
+<div class="chips" id="langs" aria-label="Languages"></div>
+</div></section>
+
+<section id="start"><div class="wrap">
+<h2>Write a few words. AI writes your book.</h2>
+<p class="lead">Type your idea in a line or two, in any language. Pick a length and press the button. The AI plans the book and writes every chapter for you. Afterwards you can edit the text, rewrite any chapter, and download your book.</p>
+<div class="gen">
+<label>Your idea (a few words is enough)<textarea id="idea" placeholder="e.g. college ke 3 dost, dosti aur pyaar ki kahani"></textarea></label>
+<div class="row">
+<label>Language<select id="lang"><option value="auto">Same as my words</option><option>English</option><option>Hindi (Devanagari)</option><option>Roman Hindi (Hindi in English letters)</option><option>Hinglish</option><option>Tamil</option><option>Punjabi (Gurmukhi)</option><option>Bhojpuri</option><option>Bengali</option><option>Marathi</option><option>Gujarati</option><option>Telugu</option><option>Kannada</option><option>Malayalam</option><option>Urdu</option><option>Spanish</option><option>French</option><option>Arabic</option></select></label>
+<label>Pages in your book<input id="pages" type="number" min="10" max="300" step="1" value="40"></label>
+<label>Chapters (leave empty for automatic)<input id="nch" type="number" min="3" max="40" step="1" placeholder="Automatic"></label>
+<fieldset class="styles"><legend>Story style (pick as many as you like)</legend><div id="styles"></div></fieldset>
+<label>Author name<input id="author" type="text"></label>
+</div>
+<p id="pnote" class="sans" style="color:var(--muted);font-size:.85rem;margin:0"></p>
+<p class="sans" style="color:var(--muted);font-size:.85rem;margin:0">Writing quality can vary by language. For less common ones, such as Bhojpuri, expect to edit more.</p>
+<div class="acts"><button class="btn primary" id="go" type="button">Write my book</button><button class="btn" id="stop" type="button" hidden>Stop</button><button class="btn" id="resume" type="button" hidden>Continue writing</button></div>
+<p id="status" class="sans" role="status"></p>
+<div id="bar" hidden><i></i></div>
+</div>
+<div id="book" hidden>
+<div class="cvwrap"><div id="cv"></div>
+<div class="cvctl"><h3 style="margin:0">Your cover</h3>
+<label>Title<input id="c-title" type="text"></label>
+<label>Author<input id="c-author" type="text"></label>
+<label>Subtitle (optional)<input id="c-tag" type="text"></label>
+<label>Scene<select id="c-motif"><option value="mountains">Mountains</option><option value="city">City</option><option value="night">Night sky</option><option value="ocean">Ocean</option><option value="sunrise">Sunrise</option><option value="abstract">Abstract</option></select></label>
+<label>Colors<select id="c-pal"><option value="auto">Chosen by AI</option><option>Midnight</option><option>Sunset</option><option>Forest</option><option>Rose</option><option>Ocean</option><option>Gold</option></select></label>
+<label>Use your own picture behind the title (optional)<input id="c-img" type="file" accept="image/*"></label>
+<label>Or upload your finished cover (used exactly as it is)<input id="c-own" type="file" accept="image/png,image/jpeg,image/webp"></label>
+<p id="cvmsg" class="sans" role="status" style="margin:0;font-size:.85rem;color:var(--muted)"></p>
+<button class="btn" id="c-own-x" type="button" hidden>Use the designed cover instead</button>
+<label>About the author (your own words, optional)<textarea id="c-bio"></textarea></label>
+<div class="acts"><button class="btn" id="c-new" type="button">New cover look</button><button class="btn" id="c-dl" type="button">Download cover</button></div></div></div>
+<div class="acts"><button class="btn primary" id="pvb" type="button">Preview book pages</button><button class="btn" id="dl-html" type="button">Download book (print-ready)</button><button class="btn" id="pr" type="button">Print / Save as PDF</button><button class="btn" id="dl-txt" type="button">Download text</button></div>
+<div class="acts"><label class="tl">Translate book into <select id="t-lang"></select></label><button class="btn" id="t-book" type="button">Translate book</button><button class="btn" id="t-undo" type="button" hidden>Back to original</button></div>
+<p class="sans" style="color:var(--muted);font-size:.9rem">This is an AI-written first draft. Click inside any chapter below to edit it, and proofread before you publish. The cover is a designed illustration with real text; for a photo-style cover, add your own picture.</p>
+<p id="est" class="sans" style="color:var(--muted);font-size:.9rem"></p>
+<p id="warn" class="sans" role="alert" style="color:#b3261e"></p>
+<div id="chs"></div>
+<iframe id="pv" hidden title="Book preview"></iframe>
+</div>
+</div></section>
+
+<section id="translate" class="alt"><div class="wrap">
+<h2>Translate your story</h2>
+<p class="lead">Wrote a story in Hindi and want it in English, or the other way round? Paste it here, choose a language, and the AI translates it. To translate a whole generated book, use the Translate book button under your cover.</p>
+<div class="gen">
+<label>Your story or text<textarea id="tr-in" placeholder="Paste your story here…"></textarea></label>
+<div class="row"><label>Translate into<select id="tr-lang"></select></label></div>
+<div class="acts"><button class="btn primary" id="tr-go" type="button">Translate</button><button class="btn" id="tr-copy" type="button">Copy translation</button><button class="btn" id="tr-dl" type="button">Download translation</button></div>
+<p id="tr-msg" class="sans" role="status"></p>
+<label>Translation (you can edit it)<textarea id="tr-out"></textarea></label>
+<p class="sans" style="color:var(--muted);font-size:.9rem;margin:0">AI translation is a strong first draft, but stories have tone, humour and local expressions. Please read the result and fix anything that sounds wrong.</p>
+</div></div></section>
+
+<section id="honest" class="alt"><div class="wrap">
+<h2>Good to know</h2>
+<div class="note">
+<p style="margin-top:0"><b>Free for users, not free to run.</b> BookGenius has no subscription and no built-in book limit, but AI generation, image generation, hosting and storage have real costs and rate limits, which are set by whoever runs the service. A local, self-hosted model is supported where your hardware allows.</p>
+<p><b>You stay the author.</b> AI output needs your review. Please proofread, check facts, confirm image licensing, and follow each publisher’s AI-disclosure rules. We cannot guarantee that a manuscript is plagiarism-free or will be accepted by a publisher.</p>
+<p style="margin-bottom:0"><b>Kindle and paperback differ.</b> A PDF is not automatically suitable for Kindle ebook publishing, so the export page includes a separate checklist for each format.</p>
+</div>
+</div></section>
+</main>
+
+<footer><div class="wrap"><span>© BookGenius AI (working name)</span><span>Privacy Policy · Terms of Service · Help</span></div></footer>
+<button id="chat-fab" class="btn primary" type="button" aria-expanded="false" aria-controls="chat">💬 Ask for help</button>
+<aside id="chat" hidden role="dialog" aria-label="Writing helper">
+<div class="chead"><b>Writing helper</b><button id="chat-x" type="button" aria-label="Close chat">×</button></div>
+<div id="chat-log" aria-live="polite"></div>
+<div id="chat-chips"></div>
+<div class="cin"><textarea id="chat-in" rows="1" placeholder="Ask anything about your book…" aria-label="Your message"></textarea><button class="btn primary" id="chat-send" type="button">Send</button></div>
+</aside>
+
+<script>
+// Outside claude.ai, provide claude.use() backed by the site's /api/ai function (Netlify AI Gateway).
+if(!window.claude)window.claude={use:async function(k){
+ if(k==="sample"){
+  var smp=async function(prompt,o){o=o||{};var res,t=0;
+   while(true){res=await fetch("/api/ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:prompt,mode:o.fast?"fast":"quality",maxTokens:o.maxTokens})});
+    if(res.ok||t>=2||(res.status!==429&&res.status<500))break;t++;await new Promise(function(r){setTimeout(r,1500*t)})}
+   if(!res.ok)throw new Error("AI request failed ("+res.status+")");
+   var rd=res.body.getReader(),dec=new TextDecoder(),text="",buf="";
+   while(true){var c=await rd.read();if(c.done)break;buf+=dec.decode(c.value,{stream:true});var ls=buf.split("\n");buf=ls.pop();var add=false;
+    ls.forEach(function(l){if(l.slice(0,5)!=="data:")return;try{var ev=JSON.parse(l.slice(5));if(ev.type==="content_block_delta"&&ev.delta&&ev.delta.type==="text_delta"){text+=ev.delta.text;add=true}else if(ev.type==="error")throw new Error((ev.error&&ev.error.message)||"AI error")}catch(e){if(e.message&&!/JSON/.test(e.message))throw e}});
+    if(add&&o.onText)o.onText({text:text})}
+   return{text:text}};
+  smp.json=async function(prompt,o){var err;for(var n=0;n<2;n++){var t=(await smp(prompt+(n?"\nKeep every text field short so the JSON is complete and valid.":""),Object.assign({maxTokens:8000},o))).text,a=t.indexOf("{"),b=t.lastIndexOf("}");
+   if(a>=0&&b>a){try{return JSON.parse(t.slice(a,b+1))}catch(e){err=e}}}
+   throw new Error("the AI reply was incomplete, please try again")};
+  return smp}
+ if(k==="downloads")return{save:async function(f){var b=f.data instanceof Blob?f.data:new Blob([f.data],{type:/\.html$/.test(f.filename)?"text/html":/\.svg$/.test(f.filename)?"image/svg+xml":"text/plain"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=f.filename;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}};
+ return null}};
+// Run fn over items with at most n in flight; results keep their order.
+async function pool(items,n,fn){var out=new Array(items.length),next=0;await Promise.all(Array.from({length:Math.min(n,items.length)},async function(){while(next<items.length){var i=next++;out[i]=await fn(items[i],i)}}));return out}
+var S={title:"",genre:"",author:"",lang:"",premise:"",chars:"",ch:[]},stopF=false,busy=false,smp=null;
+var $=function(i){return document.getElementById(i)};
+function say(t){$("status").textContent=t}
+function bar(p){$("bar").hidden=false;$("bar").firstChild.style.width=p+"%"}
+function langRule(){var l=$("lang").value;return l==="auto"?"Write in the same language and script as the user's idea (if the idea is Hindi written in English letters, write Roman Hindi in English letters).":"Write in "+l+" only. Do not switch language."}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function save(){try{localStorage.setItem("bg_book",JSON.stringify(S,function(k,v){return k==="el"?undefined:v}))}catch(e){}}
+var IMG="",OWN="",OWN_R=.707,MOT=["mountains","city","night","ocean","sunrise","abstract"],PAL={Midnight:["#0d1b3e","#3b3a8f","#e8c26a"],Sunset:["#2b1055","#d9534f","#ffd27a"],Forest:["#0b2b1f","#2f7d57","#d8e8a6"],Rose:["#3a0f2e","#c2456b","#ffd6dc"],Ocean:["#04223a","#1b7fa3","#bfeaf5"],Gold:["#1a1405","#8a6a1d","#f3d98b"]};
+function rnd(s){return function(){s=(s*1664525+1013904223)%4294967296;return s/4294967296}}
+function wrapT(t,n){var w=t.split(/\s+/),L=[],c="";w.forEach(function(x){if((c+" "+x).trim().length>n&&c){L.push(c);c=x}else c=(c+" "+x).trim()});if(c)L.push(c);return L}
+function scene(m,p,r){
+ var W=600,H=849,o="",i,x;
+ function sun(cx,cy,rr){return '<circle cx="'+cx+'" cy="'+cy+'" r="'+rr*1.5+'" fill="'+p[2]+'" filter="url(#bl)" opacity=".85"/><circle cx="'+cx+'" cy="'+cy+'" r="'+rr+'" fill="'+p[2]+'"/>'}
+ function hills(ls,k){ls.forEach(function(l){var d="M0 "+H+" L0 "+l[0];for(x=0;x<=W;x+=40)d+=" L"+x+" "+(l[0]-r()*l[1]*k);o+='<path d="'+d+' L'+W+" "+H+'Z" fill="'+p[0]+'" opacity="'+l[2]+'"/>'})}
+ if(m==="mountains"){o+=sun(300,410,64);hills([[560,110,.4],[630,130,.65],[715,120,.92]],1)}
+ else if(m==="sunrise"){o+=sun(300,560,120);hills([[600,30,.55],[690,40,.95]],1)}
+ else if(m==="night"){for(i=0;i<110;i++)o+='<circle cx="'+r()*W+'" cy="'+r()*560+'" r="'+(r()*1.6+.3)+'" fill="#fff" opacity="'+(r()*.7+.3)+'"/>';o+=sun(300,400,72)+'<circle cx="278" cy="382" r="12" fill="'+p[1]+'" opacity=".35"/><circle cx="322" cy="418" r="9" fill="'+p[1]+'" opacity=".3"/>';hills([[650,70,.7],[730,60,.95]],1)}
+ else if(m==="city"){o+=sun(420,330,56);[[.45,380],[.9,300]].forEach(function(l){x=-10;while(x<W){var w=30+r()*34,hh=120+r()*l[1];o+='<rect x="'+x+'" y="'+(H-hh)+'" width="'+w+'" height="'+hh+'" fill="'+p[0]+'" opacity="'+l[0]+'"/>';if(l[0]>.8)for(i=0;i<hh/22;i++)if(r()>.55)o+='<rect x="'+(x+6+r()*(w-16))+'" y="'+(H-hh+8+i*22)+'" width="5" height="7" fill="'+p[2]+'" opacity=".7"/>';x+=w+2}})}
+ else if(m==="ocean"){o+=sun(300,430,78)+'<rect y="520" width="600" height="329" fill="'+p[0]+'" opacity=".6"/>';for(i=0;i<16;i++){var y=535+i*i*1.3;o+='<path d="M0 '+y+' Q150 '+(y-6)+' 300 '+y+' T600 '+y+'" stroke="'+p[2]+'" stroke-opacity=".28" fill="none" stroke-width="'+(1+i*.12)+'"/>'}for(i=0;i<9;i++)o+='<rect x="'+(270+r()*40)+'" y="'+(530+i*i*3.2)+'" width="'+(60-i*3+r()*20)+'" height="3" fill="'+p[2]+'" opacity=".4"/>'}
+ else{for(i=0;i<8;i++)o+='<circle cx="'+r()*W+'" cy="'+(150+r()*600)+'" r="'+(60+r()*130)+'" fill="'+p[1+(i%2)]+'" opacity=".28" filter="url(#bl)"/>'}
+ return o}
+function coverSVG(){
+ if(OWN){var fit=(OWN_R>.62&&OWN_R<.8)?"slice":"meet";return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 849" width="600" height="849"><rect width="600" height="849" fill="#111"/><image href="'+OWN+'" width="600" height="849" preserveAspectRatio="xMidYMid '+fit+'"/></svg>'}
+ var cv=S.cv||{},pk=$("c-pal").value,p=(pk==="auto"?cv.pal:PAL[pk])||PAL.Midnight,m=$("c-motif").value||"mountains",r=rnd(S.seed||7);
+ var T=wrapT(S.title||"",16),mx=Math.max.apply(null,T.map(function(l){return l.length}).concat([1])),fs=Math.min(T.length>3?44:T.length>2?52:60,Math.floor(520/(mx*.62))),au=(S.author||"").length||1,afs=Math.max(12,Math.min(26,Math.floor((520/au-5)/.62))),tg=(cv.tag||"").length||1,tfs=Math.max(11,Math.min(20,Math.floor(520/tg/.5))),y0=190-(T.length-1)*fs*.3;
+ var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 849" width="600" height="849"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+p[0]+'"/><stop offset="1" stop-color="'+p[1]+'"/></linearGradient><radialGradient id="v" cx=".5" cy=".5" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset=".4" stop-color="#000" stop-opacity="0"/><stop offset=".8" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient><filter id="bl"><feGaussianBlur stdDeviation="22"/></filter><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2"/><feColorMatrix values="0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .6 0"/></filter></defs>';
+ s+=IMG?'<image href="'+IMG+'" width="600" height="849" preserveAspectRatio="xMidYMid slice"/>':'<rect width="600" height="849" fill="url(#g)"/>'+scene(m,p,r);
+ s+='<rect width="600" height="849" filter="url(#gr)" opacity=".2"/><rect width="600" height="849" fill="url(#sh)"/><rect width="600" height="849" fill="url(#v)"/>';
+ T.forEach(function(l,i){s+='<text x="300" y="'+(y0+i*fs*1.2)+'" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="'+fs+'" fill="#fff" stroke="rgba(0,0,0,.35)" stroke-width="1">'+esc(l)+'</text>'});
+ var ty=y0+(T.length-1)*fs*1.2+34;
+ s+='<line x1="230" x2="370" y1="'+ty+'" y2="'+ty+'" stroke="'+p[2]+'" stroke-width="2"/>';
+ if(cv.tag)s+='<text x="300" y="'+(ty+34)+'" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="'+tfs+'" fill="'+p[2]+'">'+esc(cv.tag)+'</text>';
+ return s+'<text x="300" y="790" text-anchor="middle" font-family="Georgia,serif" font-size="'+afs+'" letter-spacing="5" fill="#fff">'+esc((S.author||"").toUpperCase())+'</text></svg>'}
+function drawCover(){$("cv").innerHTML=coverSVG()}
+function syncCover(){var cv=S.cv||{};$("c-title").value=S.title||"";$("c-author").value=S.author||"";$("c-tag").value=cv.tag||"";$("c-motif").value=cv.motif||"mountains";$("c-pal").value="auto";drawCover()}
+function plist(t){return (t||"").split(/\n+/).map(function(x){return x.trim()}).filter(Boolean)}
+async function bookRuntime(){
+ var D=JSON.parse(document.getElementById("d").textContent),out=document.getElementById("out"),pages=[];
+ var FAM=["Noto Serif Devanagari","Noto Serif Tamil","Noto Serif Gurmukhi","Noto Serif Bengali","Noto Serif Gujarati","Noto Serif Telugu","Noto Serif Kannada","Noto Serif Malayalam","Noto Naskh Arabic"];
+ var sample=(D.ch.map(function(c){return c.paras[0]||""}).join(" ")+D.bio.join(" ")).slice(0,300);
+ try{await Promise.race([Promise.all(FAM.map(function(f){return document.fonts.load("16px '"+f+"'",sample).catch(function(){return 0})})),new Promise(function(r){setTimeout(r,2500)})]);await document.fonts.ready}catch(e){}
+ function mk(cls,num){var p=document.createElement("section");p.className="page "+cls;var b=document.createElement("div");b.className="body";p.appendChild(b);if(num){var n=document.createElement("div");n.className="pn";p.appendChild(n)}out.appendChild(p);pages.push(p);return b}
+ function over(b){return b.scrollHeight>b.clientHeight+1}
+ function el(tag,cls,txt,par){var e=document.createElement(tag);if(cls)e.className=cls;e.textContent=txt;par.appendChild(e);return e}
+ function flow(cls,head,paras){
+  var startNo=pages.length+1,b=mk(cls,true),first=true;
+  head.forEach(function(h){el(h[0],h[1],h[2],b)});
+  paras.forEach(function(t){
+   var words=t.split(/\s+/),cont=false;
+   while(words.length){
+    var p=el("p",(first?"first":"")+(cont?" cont":""),words.join(" "),b);
+    if(!over(b)){first=false;break}
+    var lo=0,hi=words.length;
+    while(lo<hi){var mid=Math.ceil((lo+hi)/2);p.textContent=words.slice(0,mid).join(" ");if(over(b))hi=mid-1;else lo=mid}
+    if(lo===0&&b.querySelectorAll("p").length>1){b.removeChild(p);b=mk(cls,true);continue}
+    if(lo===0)lo=1;
+    p.textContent=words.slice(0,lo).join(" ");words=words.slice(lo);first=false;cont=true;b=mk(cls,true);
+   }
+  });
+  return startNo;
+ }
+ mk("cv",false).innerHTML=D.cover;
+ var tp=mk("tp",false);el("h1","",D.title,tp);if(D.sub)el("p","st",D.sub,tp);el("div","o","❖",tp);el("p","",D.author,tp);
+ var cp=mk("cp",false);el("p","","© "+D.yr+" "+D.author+". All rights reserved.",cp);el("p","","This book was drafted with AI assistance and reviewed and edited by the author.",cp);
+ var tb=mk("toc",true),nums=[];
+ D.ch.forEach(function(c,i){nums.push(flow("ch",[["span","n","CHAPTER "+(i+1)],["h2","",c.t]],c.paras))});
+ if(D.bio.length)flow("ch ab",[["h2","","About the Author"]],D.bio);
+ el("h2","",D.contents,tb);var ol=el("ol","","",tb);
+ D.ch.forEach(function(c,i){var li=document.createElement("li");el("span","",(i+1)+". "+c.t,li);el("span","d","",li);el("b","",String(nums[i]),li);ol.appendChild(li)});
+ pages.forEach(function(p,i){var n=p.querySelector(".pn");if(n)n.textContent=i+1});
+ window.__pages=pages.length;window.__ready=true;
+}
+function bookDoc(){
+ var rtl=/^(Urdu|Arabic)/.test(S.lang||$("lang").value);
+ var D={title:S.title,sub:(S.cv&&S.cv.tag)||"",author:S.author||"The Author",yr:new Date().getFullYear(),contents:"Contents",cover:coverSVG(),ch:S.ch.map(function(c){return{t:c.title,paras:plist(c.text)}}),bio:plist($("c-bio").value)};
+ var css="@page{size:A5;margin:0}*{box-sizing:border-box}body{margin:0;font:11.5pt/1.7 Georgia,'Noto Serif Devanagari','Noto Serif Tamil','Noto Serif Gurmukhi','Noto Serif Bengali','Noto Serif Gujarati','Noto Serif Telugu','Noto Serif Kannada','Noto Serif Malayalam','Noto Naskh Arabic',serif;color:#1b2340}.page{position:relative;width:148mm;height:210mm;overflow:hidden;break-after:page;background:#fff}.page:last-child{break-after:auto}.body{margin:20mm 16mm 0;height:168mm;overflow:hidden}.cv .body{margin:0;height:210mm}.cv svg{width:148mm;height:210mm;display:block}.pn{position:absolute;bottom:10mm;left:0;right:0;text-align:center;font-size:10pt;color:#888}.tp .body{text-align:center;padding-top:30mm}.tp h1{font-size:30pt;line-height:1.2;margin:0 0 6mm}.tp .st{font-style:italic;margin:0 0 6mm}.o{color:#b8892b;letter-spacing:.3em;margin:6mm 0}.cp .body{padding-top:120mm;font-size:9pt;color:#555}.cp p{margin:0 0 3mm}.toc h2{text-align:center;margin:6mm 0 8mm;font-size:18pt}.toc ol{list-style:none;padding:0;margin:0;line-height:2.1}.toc li{display:flex;gap:6px}.toc .d{flex:1;border-bottom:1px dotted #aaa;transform:translateY(-.45em)}.n{display:block;text-align:center;letter-spacing:.3em;color:#b8892b;font-size:10pt;margin-top:20mm}.ch h2{text-align:center;font-size:20pt;margin:3mm 0 10mm}.ch p{margin:0;text-indent:1.2em;text-align:justify;hyphens:auto}.ch p.first,.ch p.cont{text-indent:0}.ch p.first::first-letter{float:left;font-size:3.2em;line-height:.85;padding:.05em .08em 0 0;color:#b8892b}.ab h2{margin-top:6mm}[dir=rtl] .ch p{text-align:right;text-indent:0}[dir=rtl] .ch p.first::first-letter{float:none;font-size:inherit;color:inherit}@media screen{body{background:#d9d4c7}.page{margin:14px auto;box-shadow:0 4px 18px rgba(0,0,0,.2)}}";
+ return '<!DOCTYPE html><html'+(rtl?' dir="rtl"':'')+'><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(S.title)+'</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari&family=Noto+Serif+Tamil&family=Noto+Serif+Gurmukhi&family=Noto+Serif+Bengali&family=Noto+Serif+Gujarati&family=Noto+Serif+Telugu&family=Noto+Serif+Kannada&family=Noto+Serif+Malayalam&family=Noto+Naskh+Arabic&display=swap"><style>'+css+'</style></head><body><div id="out"></div><script type="application/json" id="d">'+JSON.stringify(D).replace(/</g,"\\u003c")+'<\/script><script>('+bookRuntime.toString()+')()<\/script></body></html>'}
+function showPV(){var f=$("pv");f.srcdoc=bookDoc();f.hidden=false;return f}
+function render(){
+ $("book").hidden=false;syncCover();showEst();
+ var box=$("chs");box.textContent="";
+ S.ch.forEach(function(c,i){
+  var d=document.createElement("div");d.className="chap";
+  var h=document.createElement("h3");h.textContent=(i+1)+". "+c.title;
+  var t=document.createElement("div");t.className="t";t.contentEditable="true";t.textContent=c.text||"";
+  t.addEventListener("input",function(){c.text=t.innerText;save();showEst()});
+  var b=document.createElement("button");b.className="btn";b.type="button";b.textContent="Rewrite this chapter";
+  b.addEventListener("click",function(){rewrite(i)});
+  d.appendChild(h);d.appendChild(t);d.appendChild(b);box.appendChild(d);c.el=t;
+ });
+}
+async function plan(idea,n){
+ return await smp.json("You are a book planner. The user's idea: \""+idea+"\"\n"+langRule()+"\nStory style: "+styleVal()+".\nPlan an original book with exactly "+n+" chapters. Design a real emotional arc: a clear beginning, rising conflict, a turning point in the middle, a low point, and a satisfying emotional ending. In characters, give each main character a name, an age, a want, a fear and a flaw. In every chapter summary, say what changes emotionally. Reply with only JSON: {\"title\":\"\",\"genre\":\"\",\"premise\":\"3-4 sentence summary\",\"characters\":\"short profile of each main character\",\"cover\":{\"motif\":\"one of mountains, city, night, ocean, sunrise, abstract that best fits the mood\",\"palette\":[\"#darkest hex\",\"#mid hex\",\"#light accent hex\"],\"tagline\":\"one short line\"},\"chapters\":[{\"title\":\"\",\"summary\":\"2 sentences\"}]}. Text values must follow the language rule.");
+}
+var WPP=260;
+var STY=["Emotional and realistic","Romantic","Friendship and college life","Family drama","Thriller or mystery","Funny and light","Inspirational and motivational","Fantasy or adventure","Self-help or non-fiction (not a story)"];
+(function(){STY.forEach(function(s,k){var l=document.createElement("label");l.className="sty";var i=document.createElement("input");i.type="checkbox";i.value=s;if(k===0)i.checked=true;l.appendChild(i);l.appendChild(document.createTextNode(s));$("styles").appendChild(l)})})();
+function styleVal(){var v=Array.prototype.map.call(document.querySelectorAll("#styles input:checked"),function(i){return i.value});return v.length?v.join(", "):"Emotional and realistic"}
+function calc(){var pg=Math.max(10,Math.min(300,Math.round(+$("pages").value)||40)),n=(function(){var v=Math.round(+$("nch").value);return v>=3&&v<=40?v:Math.max(3,Math.min(40,Math.round((pg-4)/6)))})(),W=Math.max(250,Math.round(((pg-4)/n-.3)*WPP));return{pg:pg,n:n,W:W,steps:n*Math.ceil(W/800)}}
+function updatePnote(){var K=calc(),ep=Math.round(4+K.n*(K.W/WPP+.3));$("pnote").textContent="Goal: about "+K.pg+" pages. Plan: "+K.n+" chapters of about "+K.W+" words each, roughly "+ep+" pages."+(Math.abs(ep-K.pg)>3?" Each chapter needs at least about 250 words, so this does not match your page goal. Choose fewer chapters or more pages.":"")+(K.steps>40?" This is a long book: about "+K.steps+" AI writing steps, so it can take a long time.":"")+" The real page count depends on the font and device."}
+function words(t){return (t||"").trim()?t.trim().split(/\s+/).length:0}
+function estPages(){var p=4+($("c-bio").value.trim()?1:0);S.ch.forEach(function(c){if(isDone(c))p+=words(c.text)/WPP+.3});return Math.round(p)}
+function showEst(){if(!S.ch||!S.ch.length)return;var d=S.ch.filter(isDone).length,tw=S.ch.reduce(function(a,c){return a+(isDone(c)?words(c.text):0)},0);$("est").textContent="Written so far: "+d+" of "+S.ch.length+" chapters, "+tw+" words, about "+estPages()+" pages"+(S.pages?" (your goal: "+S.pages+")":"")+". Page count is an estimate; the exact number depends on font and device."}
+function isDone(c){return c.done===true||(c.done===undefined&&(c.text||"").trim().length>0)}
+function outline(){return S.ch.map(function(c,k){return (k+1)+". "+c.title+": "+c.summary}).join("\n")}
+function craft(){return /non-fiction/.test(S.style||"")?"Write clearly and warmly for a beginner, with real-life examples and short stories. Never invent statistics, quotes, studies or sources.":"Write like a published novelist, not like a summary. Show feelings through actions, small physical details, thoughts and silences instead of saying that someone felt sad or happy. Use natural, realistic dialogue where each character sounds different, the way real people of that age and place talk. Ground every scene in specific details: place, time of day, sounds, smells, objects. Give characters real wants, fears and flaws, let them make mistakes and change. Build emotion slowly: ordinary moments first, then conflict, then a turning point. Avoid cliches, moral lectures, repeated phrases and sudden endings. Vary sentence length. End most chapters on a small emotional beat or hook. Keep names, places and facts the same as in earlier chapters. Do not use headings, bullet points or phrases like in this chapter."}
+function chapPrompt(i,k,m,each,acc){
+ var prev=i>0&&S.ch[i-1].text?"End of previous chapter:\n"+S.ch[i-1].text.slice(-700)+"\n\n":"";
+ var tail=acc?"Text of this chapter so far (end):\n"+acc.slice(-900)+"\n\n":prev;
+ var last=i===S.ch.length-1&&k===m;
+ return "Write chapter "+(i+1)+" of "+S.ch.length+" of the book \""+S.title+"\" ("+S.genre+")"+(m>1?", part "+k+" of "+m+" of this chapter":"")+".\nPremise: "+S.premise+"\nCharacters: "+S.chars+"\nPlan:\n"+outline()+"\n\n"+tail+"This chapter: "+S.ch[i].title+" - "+S.ch[i].summary+"\n"+langRule()+"\nStory style: "+(S.style||"Emotional and realistic")+".\n"+craft()+"\nWrite about "+each+" words, consistent with earlier text. Never repeat or summarise earlier events or paragraphs."+(k>1?" Continue seamlessly from where the text ended.":"")+(k<m?" Do not end or conclude the chapter yet.":" Finish this chapter properly.")+(last?" This is the final chapter, so give the whole book a satisfying ending.":"")+" Output only the new story text, with no heading and no notes.";
+}
+async function writeCh(i){
+ var c=S.ch[i];c.done=false;var W=S.wpc||700,m=Math.max(1,Math.ceil(W/800)),each=Math.round(W/m),acc="";
+ for(var k=1;k<=m;k++){
+  var r=await smp(chapPrompt(i,k,m,each,acc),{cache:false,onText:function(x){c.text=(acc?acc+"\n\n":"")+x.text;if(c.el)c.el.textContent=c.text}});
+  var part=r.text.trim();if(!part)throw new Error("the AI returned an empty chapter");
+  acc=acc?acc+"\n\n"+part:part;c.text=acc;if(c.el)c.el.textContent=acc;
+ }
+ c.done=true;save();showEst();
+}
+async function go(){
+ if(busy)return;var idea=$("idea").value.trim();
+ if(idea.length<3){say("Please type a few words about your book first.");return}
+ busy=true;stopF=false;$("go").disabled=true;$("stop").hidden=false;
+ try{
+  smp=await claude.use("sample");
+  if(!smp){say("The AI writer is not available in this view. Please open the page in claude.ai.");return}
+  var K=calc(),n=K.n;say("Planning your book…");bar(3);
+  var p=await plan(idea,n);
+  var cv=p.cover||{},ok=Array.isArray(cv.palette)&&cv.palette.length>=3&&cv.palette.every(function(x){return /^#[0-9a-fA-F]{6}$/.test(x)});IMG="";OWN="";$("c-own-x").hidden=true;$("c-own").value="";
+  S={title:p.title,genre:p.genre,author:$("author").value.trim(),lang:$("lang").value,premise:p.premise,chars:typeof p.characters==="string"?p.characters:JSON.stringify(p.characters),cv:{motif:MOT.indexOf(cv.motif)>-1?cv.motif:"mountains",pal:ok?cv.palette.slice(0,3):PAL.Midnight,tag:cv.tagline||""},seed:Math.floor(Math.random()*1e9),wpc:K.W,pages:K.pg,style:styleVal(),ch:(p.chapters||[]).map(function(c){return{title:c.title,summary:c.summary,text:""}})};
+  render();
+  busy=false;await resume();
+ }catch(e){say("Something went wrong ("+(e&&e.message?e.message:"error")+"). Please press the button to try again.")}
+ finally{busy=false;$("go").disabled=false;$("stop").hidden=true;showResume()}
+}
+async function rewrite(i){
+ if(busy)return;busy=true;$("go").disabled=true;
+ try{smp=smp||await claude.use("sample");say("Rewriting chapter "+(i+1)+"…");S.ch[i].text="";await writeCh(i);say("Chapter "+(i+1)+" rewritten.")}
+ catch(e){say("Could not rewrite: "+(e&&e.message?e.message:"error"))}
+ finally{busy=false;$("go").disabled=false}
+}
+function plain(){return S.title+"\n"+(S.author?"by "+S.author+"\n":"")+"\n"+S.ch.map(function(c,i){return (i+1)+". "+c.title+"\n\n"+c.text}).join("\n\n\n")}
+async function dl(name,data){
+ try{var d=await claude.use("downloads");if(!d){say("Downloads are not available here. Use Print / Save as PDF instead.");return}await d.save({filename:name,data:data})}
+ catch(e){if(!e||e.code!=="declined")say("Could not save the file. Try Print / Save as PDF.")}
+}
+$("go").addEventListener("click",go);
+$("stop").addEventListener("click",function(){stopF=true;say("Stopping after this chapter…")});
+$("dl-txt").addEventListener("click",function(){if(!gate())return;dl("book.txt",plain())});
+$("dl-html").addEventListener("click",function(){if(!gate())return;dl("book.html",bookDoc())});
+$("pvb").addEventListener("click",function(){if(!gate())return;showPV().scrollIntoView({behavior:"smooth"})});
+$("pr").addEventListener("click",function(){if(!gate())return;var f=showPV();f.onload=function(){try{var go2=function(){f.contentWindow.focus();f.contentWindow.print()};var t0=Date.now(),w=function(){if(f.contentWindow.__ready||Date.now()-t0>20000)go2();else setTimeout(w,150)};w()}catch(e){say("Printing is blocked here. Use Download book, open the file, then press Ctrl+P and choose Save as PDF.")}}});
+function coverPNG(){return new Promise(function(res,rej){var im=new Image();im.onload=function(){var c=document.createElement("canvas");c.width=1200;c.height=1698;c.getContext("2d").drawImage(im,0,0,1200,1698);c.toBlob(function(b){b?res(b):rej()},"image/png")};im.onerror=rej;im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(coverSVG())})}
+$("c-dl").addEventListener("click",async function(){try{await dl("cover.png",await coverPNG())}catch(e){dl("cover.svg",coverSVG())}});
+["c-motif","c-pal"].forEach(function(i){$(i).addEventListener("change",drawCover)});
+$("c-title").addEventListener("input",function(){S.title=this.value;drawCover();save()});
+$("c-author").addEventListener("input",function(){S.author=this.value;drawCover();save()});
+$("c-tag").addEventListener("input",function(){S.cv=S.cv||{};S.cv.tag=this.value;drawCover();save()});
+$("c-new").addEventListener("click",function(){S.seed=Math.floor(Math.random()*1e9);IMG="";OWN="";$("c-own-x").hidden=true;$("c-own").value="";$("cvmsg").textContent="";$("c-motif").value=MOT[Math.floor(Math.random()*MOT.length)];drawCover()});
+$("c-own").addEventListener("change",function(){var fl=this.files[0],m=$("cvmsg"),inp=this;if(!fl)return;
+ if(!/^image\/(png|jpeg|webp)$/.test(fl.type)){m.textContent="Please choose a PNG, JPG or WebP image.";inp.value="";return}
+ if(fl.size>8*1024*1024){m.textContent="This image is larger than 8 MB. Please use a smaller file.";inp.value="";return}
+ var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){OWN=rd.result;OWN_R=im.width/im.height;$("c-own-x").hidden=false;m.textContent="Your cover is used exactly as uploaded, and no text is added. A portrait image works best (about 2:3 or A5 shape).";drawCover()};im.onerror=function(){m.textContent="That image could not be read. Please try another file."};im.src=rd.result};rd.onerror=function(){m.textContent="That file could not be read."};rd.readAsDataURL(fl)});
+$("c-own-x").addEventListener("click",function(){OWN="";$("c-own").value="";$("c-own-x").hidden=true;$("cvmsg").textContent="";drawCover()});
+$("c-img").addEventListener("change",function(){var fl=this.files[0];if(!fl)return;var rd=new FileReader();rd.onload=function(){IMG=rd.result;drawCover()};rd.readAsDataURL(fl)});
+function showResume(){$("resume").hidden=!S.ch.some(function(c){return!isDone(c)})}
+async function resume(){
+ if(busy||!S.ch.length)return;busy=true;stopF=false;$("go").disabled=true;$("stop").hidden=false;$("resume").hidden=true;
+ try{smp=smp||await claude.use("sample");if(!smp){say("The AI writer is not available in this view. Please open the page in claude.ai.");return}
+  for(var i=0;i<S.ch.length;i++){
+   if(isDone(S.ch[i]))continue;
+   if(stopF){say("Stopped. Press Continue writing to finish the remaining chapters.");return}
+   say("Writing chapter "+(i+1)+" of "+S.ch.length+"…");bar(5+90*i/S.ch.length);S.ch[i].text="";await writeCh(i);
+  }
+  say("All chapters are written. Read them, edit anything, then download.");bar(100);showEst();
+ }catch(e){say("Writing stopped at an unfinished chapter ("+(e&&e.message?e.message:"error")+"). Press Continue writing to retry. Finished chapters are kept.")}
+ finally{busy=false;$("go").disabled=false;$("stop").hidden=true;showResume()}
+}
+function norm(x){return x.replace(/\s+/g," ").trim().toLowerCase()}
+function gate(){
+ var w=$("warn"),miss=[],seen={},dup=0,short=[];
+ S.ch.forEach(function(c,i){
+  if(!isDone(c)||!(c.text||"").trim())miss.push(i+1);
+  else{if(c.text.trim().split(/\s+/).length<120)short.push(i+1);(c.text||"").split(/\n+/).forEach(function(p){p=norm(p);if(p.length>40){if(seen[p])dup++;seen[p]=1}})}
+ });
+ var m=[];
+ if(miss.length)m.push("Chapter "+miss.join(", ")+" "+(miss.length>1?"are":"is")+" not written yet, so the book is incomplete. Press Continue writing first.");
+ if(dup)m.push(dup+" repeated paragraph"+(dup>1?"s were":" was")+" found. Please check the chapters and remove repeats.");
+ if(short.length&&!miss.length)m.push("Chapter "+short.join(", ")+" "+(short.length>1?"are":"is")+" very short. You may want to rewrite "+(short.length>1?"them":"it")+".");
+ w.textContent=m.join(" ");
+ return miss.length===0;
+}
+function chunks(t,n){var o=[],c="";t.split(/\n/).forEach(function(x){if((c+"\n"+x).length>n&&c){o.push(c);c=x}else c=c?c+"\n"+x:x});if(c)o.push(c);return o}
+async function tr(text,lang,onPart){
+ smp=smp||await claude.use("sample");if(!smp)throw new Error("the AI writer is not available here");
+ var parts=chunks(text,2500),done=0;
+ var out=await pool(parts,3,async function(part){
+  var r=await smp("Translate the following text into "+lang+". Keep the meaning, tone, character names, paragraph breaks and dialogue style. Do not summarize, shorten or add anything. Output only the translation.\n\n"+part,{cache:false,fast:true});
+  done++;if(onPart)onPart(done,parts.length,"");return r.text.trim();
+ });
+ return out.join("\n");
+}
+async function transBook(){
+ if(busy)return;var lang=$("t-lang").value;busy=true;$("go").disabled=true;$("t-book").disabled=true;
+ try{
+  smp=smp||await claude.use("sample");if(!smp)throw new Error("the AI writer is not available here");
+  if(!S.orig)S.orig={title:S.title,tag:(S.cv||{}).tag||"",lang:$("lang").value,ch:S.ch.map(function(c){return{title:c.title,text:c.text}})};
+  var O=S.orig;say("Translating title and chapter names…");bar(2);
+  var m=await smp.json("Translate these book titles into "+lang+". Reply with only JSON {\"title\":\"\",\"tagline\":\"\",\"chapters\":[...same number of items...]}.\n"+JSON.stringify({title:O.title,tagline:O.tag,chapters:O.ch.map(function(c){return c.title})}),{fast:true});
+  S.title=m.title||O.title;S.cv=S.cv||{};S.cv.tag=m.tagline||"";
+  for(var i=0;i<S.ch.length;i++){S.ch[i].title=(m.chapters&&m.chapters[i])||O.ch[i].title}
+  $("lang").value=lang;S.lang=lang;render();
+  var fin=0;say("Translating "+S.ch.length+" chapters into "+lang+"…");bar(5);
+  await pool(S.ch,3,async function(c,j){
+   c.text=await tr(O.ch[j].text||"",lang);fin++;render();save();
+   say("Translated "+fin+" of "+S.ch.length+" chapters into "+lang+"…");bar(5+90*fin/S.ch.length);
+  });
+  bar(100);say("Translation finished. Read it, edit anything, then download.");$("t-undo").hidden=false;
+ }catch(e){say("Translation stopped ("+(e&&e.message?e.message:"error")+"). Press Translate book to try again; your original is safe.");$("t-undo").hidden=!S.orig}
+ finally{busy=false;$("go").disabled=false;$("t-book").disabled=false}
+}
+function undoTrans(){var O=S.orig;if(!O)return;S.title=O.title;S.cv.tag=O.tag;$("lang").value=O.lang;S.lang=O.lang;O.ch.forEach(function(c,i){S.ch[i].title=c.title;S.ch[i].text=c.text});S.orig=null;render();save();$("t-undo").hidden=true;say("Original restored.")}
+["t-lang","tr-lang"].forEach(function(id){var s=$(id);Array.prototype.forEach.call($("lang").options,function(o){if(o.value!=="auto"){var n=document.createElement("option");n.value=o.value;n.textContent=o.textContent;s.appendChild(n)}});s.value="English"});
+$("resume").addEventListener("click",resume);$("t-book").addEventListener("click",transBook);$("t-undo").addEventListener("click",undoTrans);
+$("tr-go").addEventListener("click",async function(){
+ var t=$("tr-in").value.trim(),m=$("tr-msg");if(t.length<2){m.textContent="Please paste your story first.";return}
+ if(busy){m.textContent="Please wait for the current task to finish.";return}
+ busy=true;$("tr-go").disabled=true;
+ try{var o=await tr(t,$("tr-lang").value,function(i,n,x){m.textContent="Translated part "+i+" of "+n+"…"});$("tr-out").value=o;m.textContent="Done. Please read it and fix anything that sounds wrong."}
+ catch(e){m.textContent="Something went wrong ("+(e&&e.message?e.message:"error")+"). Press Translate to try again."}
+ finally{busy=false;$("tr-go").disabled=false}
+});
+$("tr-copy").addEventListener("click",function(){var m=$("tr-msg");try{navigator.clipboard.writeText($("tr-out").value).then(function(){m.textContent="Copied."},function(){m.textContent="Select the text and copy it."})}catch(e){m.textContent="Select the text and copy it."}});
+$("tr-dl").addEventListener("click",function(){if($("tr-out").value.trim())dl("translation.txt",$("tr-out").value)});
+var CH=[],chatBusy=false;
+function chatCtx(){return S.title?"The user's current book: title \""+S.title+"\", genre "+S.genre+", "+S.ch.filter(isDone).length+" of "+S.ch.length+" chapters written. Chapters: "+S.ch.map(function(c){return c.title}).join("; ")+".":"The user has not started a book yet."}
+function addMsg(role,text){var d=document.createElement("div");d.className="m "+role;d.textContent=text;$("chat-log").appendChild(d);$("chat-log").scrollTop=1e9;return d}
+async function ask(q){
+ if(chatBusy||!q.trim())return;chatBusy=true;addMsg("u",q);var a=addMsg("a","…");CH.push("User: "+q);
+ try{smp=smp||await claude.use("sample");if(!smp)throw new Error("the AI is not available in this view");
+  var p="You are the friendly writing helper inside BookGenius AI, a page where a person types a few words and the AI writes a book chapter by chapter, designs a cover, translates it, and makes a print-ready PDF with page numbers. Help beginners: give book ideas, titles, plot and character suggestions, improve their idea, and explain how to use the page (Write my book, Continue writing, Rewrite this chapter, Translate book, cover options, Preview book pages, Print / Save as PDF). Keep answers short and simple. Reply in the user's language and script (for example Roman Hindi if they write Roman Hindi). You cannot change their book yourself, so tell them which button to use. Do not invent facts.\n"+chatCtx()+"\n\nConversation so far:\n"+CH.slice(-10).join("\n")+"\nAssistant:";
+  var r=await smp(p,{cache:false,fast:true,onText:function(x){a.textContent=x.text;$("chat-log").scrollTop=1e9}});
+  var t=r.text.trim();a.textContent=t;CH.push("Assistant: "+t);
+  var b=document.createElement("button");b.type="button";b.textContent="Use this as my idea";b.addEventListener("click",function(){$("idea").value=t.slice(0,600);$("idea").scrollIntoView({behavior:"smooth",block:"center"});$("chat").hidden=true;$("chat-fab").setAttribute("aria-expanded","false")});a.appendChild(b);
+ }catch(e){a.textContent="Sorry, I could not answer ("+(e&&e.message?e.message:"error")+"). Please try again."}
+ finally{chatBusy=false}
+}
+function sendChat(){var v=$("chat-in").value;$("chat-in").value="";ask(v)}
+function toggleChat(o){$("chat").hidden=!o;$("chat-fab").setAttribute("aria-expanded",o?"true":"false");if(o)$("chat-in").focus()}
+addMsg("a","Hi! I can help you find a book idea, a title, or explain how to make your book and PDF. What would you like to do?");
+[["Give me 5 book ideas","Give me 5 short book ideas I could write"],["Suggest a title","Suggest 5 titles for my book"],["Make my idea better",""],["How do I get the PDF?","How do I get my book as a PDF with page numbers?"]].forEach(function(c){var b=document.createElement("button");b.type="button";b.textContent=c[0];b.addEventListener("click",function(){ask(c[1]||"Please make this idea of mine better and more interesting: "+($("idea").value||"(I have not typed one yet)"))});$("chat-chips").appendChild(b)});
+$("chat-fab").addEventListener("click",function(){toggleChat($("chat").hidden)});$("chat-x").addEventListener("click",function(){toggleChat(false)});
+$("chat-send").addEventListener("click",sendChat);
+$("chat-in").addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat()}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("chat").hidden)toggleChat(false)});
+$("pages").addEventListener("input",updatePnote);$("nch").addEventListener("input",updatePnote);updatePnote();
+(function(){var G=["Novel","Fiction","Short story","Romance","Friendship","Thriller and suspense","Mystery","Horror","Fantasy","Science fiction","Adventure","Historical fiction","Drama","Poetry and literature","Self-help","Personal development","Motivation","Biography and memoir","Non-fiction","Educational","Business and entrepreneurship","Children’s books","Cookbooks","Philosophy","Spirituality","Custom category"];
+var L=["English","Hindi (Devanagari)","Roman Hindi / Hinglish","Tamil","Punjabi (Gurmukhi)","Punjabi (Shahmukhi)","Bhojpuri","Bengali","Marathi","Gujarati","Telugu","Kannada","Malayalam","Urdu","Spanish","French","Arabic"];
+function ch(el,a){a.forEach(function(t){var s=document.createElement("span");s.className="chip";s.textContent=t;el.appendChild(s)})}
+ch(document.querySelector(".chips"),G);ch($("langs"),L);
+try{var s=JSON.parse(localStorage.getItem("bg_book")||"null");if(s&&s.ch&&s.ch.length){S=s;render();showResume();say(S.ch.some(function(c){return!isDone(c)})?"Your last book was restored, but some chapters are not written yet. Press Continue writing.":"Your last book was restored. Write a new one any time.")}}catch(e){}})();
+</script>
+</body>
+</html>
